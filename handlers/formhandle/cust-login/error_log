@@ -1,0 +1,10 @@
+[23-Aug-2018 10:00:42 UTC] PHP Fatal error:  Uncaught Error: Call to a member function prepare() on null in /home/yuhytw92te0y/public_html/includes/connect.inc.php:38
+Stack trace:
+#0 /home/yuhytw92te0y/public_html/handlers/formhandle/cust-login/index.php(12): DB->query('SELECT  `email`...')
+#1 {main}
+  thrown in /home/yuhytw92te0y/public_html/includes/connect.inc.php on line 38
+[23-Aug-2018 10:00:52 UTC] PHP Fatal error:  Uncaught Error: Call to a member function prepare() on null in /home/yuhytw92te0y/public_html/includes/connect.inc.php:38
+Stack trace:
+#0 /home/yuhytw92te0y/public_html/handlers/formhandle/cust-login/index.php(12): DB->query('SELECT  `email`...')
+#1 {main}
+  thrown in /home/yuhytw92te0y/public_html/includes/connect.inc.php on line 38
