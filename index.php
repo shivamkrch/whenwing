@@ -23,6 +23,14 @@ if (isset($_GET['v1']) && isset($_GET['v2']) && isset($_GET['v3']) && isset($_GE
         case 'service-providers':
             require $path['pages'] . '/service-providers.php';
             break;
+        case 'services':
+            switch($post_get_v2){
+                case 'ac-service-repair-and-installation':
+                    require $path['pages'] . '/ac-service-repair-and-installation.php';
+                    break;
+                default:require $path['pages'] . '/404.php';
+            }
+            break;
         //Dont delete following line
         //Handles calling of form handle
         // case 'handlers':
