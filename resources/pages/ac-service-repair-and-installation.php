@@ -1,1 +1,1 @@
-<h1>ac-service-repair-and-installation</h1>
+<?php $path = require $_SERVER['DOCUMENT_ROOT'] . '/config/config-path.php';
