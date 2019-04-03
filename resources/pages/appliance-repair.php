@@ -1,0 +1,130 @@
+<?php $path = require $_SERVER['DOCUMENT_ROOT'].'/config/config-path.php';
+require $path['root'] . '/includes/connect.inc.php';
+    $profession = $_GET['v2'];
+    $profession = str_replace("-"," ",$profession);
+    if(isset($_POST['firstoption']) && isset($_POST['secondoption'])){
+        $db = new DB();
+        $db->query('SELECT `prov_name`, `age`, `profession`, `workexp`, `speciality`,`prov_record`, `addr`, `contact`, `about`, `price` FROM `ww_provider` WHERE `profession`=:profession');
+        $db->queryError();
+        $db->bind(':profession', $profession);
+        $exeRes = $db->resultset();
+        echo $db->rowCount();
+    }elseif(isset($_POST['priceFilter']) && isset($_POST['locFilter'])){
+        $db = new DB();
+        $db->query('SELECT `prov_name`, `age`, `profession`, `workexp`, `speciality`,`prov_record`, `addr`, `contact`, `about`, `price` FROM `ww_provider` WHERE `profession`=:profession AND `price`<=:price');
+        $db->queryError();
+        $db->bind(':profession', $profession);
+        $db->bind(':price', $_POST['priceFilter']);
+        $exeRes = $db->resultset();
+    }else{
+        $db = new DB();
+        $db->query('SELECT `prov_name`, `age`, `profession`, `workexp`, `speciality`,`prov_record`, `addr`, `contact`, `about`, `price` FROM `ww_provider` WHERE `profession`=:profession');
+        $db->queryError();
+        $db->bind(':profession', $profession);
+        $exeRes = $db->resultset();
+    }
+    $db->query('SELECT * FROM services WHERE service=:service');
+    $db->bind(':service',$profession);
+    $service_res = $db->resultset()[0];
+    $db->terminate();
+?>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>WhenWing Services | <?=ucwords($service_res['service'])?></title>
+<meta name="description" content="">
+<meta name="keywords" content="">
+<meta name="theme-color" content="#4885ed" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="icon" href="images/logo.png">
+<?php include 'includes/style.inc.php';?>
+</head>
+<body>
+<?php include 'resources/templates/services-header-tmpl.php';?>
+<div class="container-fluid row mt-5 p-3 pt-5 mr-3">
+    <div class="col-sm-3 mt-3 p-4 pt-5 border-right" id="filters">
+    <button class="btn bg-transparent float-right" type="button" data-toggle="collapse" data-target="#filterForm" aria-expanded="false" aria-controls="filterForm">
+        <span class="badge badge-pill badge-primary" style="font-size: 1.2rem;"><i class="fa fa-chevron-down"></i></span>
+    </button>
+    <h2><i class="fas fa-sliders-h text-primary mr-2 align-middle mb-1" style="font-size: 1.5rem"></i>Filters</h2>
+    <form class="collapse mt-3" id="filterForm" method="POST" action="?v1=services&v2=<?=$_REQUEST['v2']?>">
+        <label for="customRange" style="font-weight: bold">Price</label>
+        <div class="d-flex bd-highlight">
+            <div class="p-2 flex-fill bd-highlight">₹ 100</div>
+            <div class="p-2 flex-fill bd-highlight">
+                <input type="range" class="custom-range" id="priceFilter" name="priceFilter" min="100" max="5000" step="50" value="<?php
+                if(isset($_POST['priceFilter'])) echo $_POST['priceFilter'];
+                else echo '100';
+                ?>">
+            </div>
+            <div class="p-2 flex-fill bd-highlight">₹ 5000</div>
+        </div>
+        <div class="text-center" id="priceFilterVal" style="font-weight: bold"></div>
+        <label for="customRange" style="font-weight: bold">Location</label>
+        <div class="d-flex bd-highlight">
+            <div class="p-2 flex-fill bd-highlight">1 KM</div>
+            <div class="p-2 flex-fill bd-highlight">
+                <input type="range" class="custom-range" id="locFilter" name="locFilter" min="2" max="20" step="1" value="2">
+            </div>
+            <div class="p-2 flex-fill bd-highlight">20 KM</div>
+        </div>
+        <div class="text-center" id="locFilterVal" style="font-weight: bold"></div>
+        <input type="submit" value="Apply" class="btn btn-primary btn-sm btn-block mt-3">
+    </form>
+
+    </div>
+    <div class="col-sm-9">
+        <div class="container m-3 p-4 shadow-sm">
+            <h3>List of Providers <span class="badge badge-pill badge-<?php
+            if(count($exeRes)>0) echo 'success';
+            else echo 'danger';
+            ?>"><?=count($exeRes) ?></span></h3>
+            <?php
+                if($db->rowCount()>0){
+                    foreach($exeRes as $res){
+                        echo '
+                        <div class="card mt-3 shadow-sm">
+                            <div class="card-header"><img src="https://via.placeholder.com/150" alt="John Doe" class="mr-3 rounded-circle" style="width:50px;">
+                            <h4 style="display: inline-block">'.$res['prov_name'].'</h4></div>';
+                            ?>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-6">
+                                        <ul>
+                                            <li><b>Age: </b><?=$res['age']?></li>
+                                            <li><b>Work Experience: </b><?=$res['workexp']?></li>
+                                            <li><b>Record: </b><?=$res['prov_record']?></li>
+                                            <li><b>About: </b><?=$res['about']?></li>
+                                        </ul>
+                                    </div>
+                                    <div class="col-6">
+                                        <ul>
+                                            <li><b>Address: </b><?=$res['addr']?></li>
+                                            <li><b>Speciality: </b><?=$res['speciality']?></li>
+                                            <li><b>Contact: </b><?=$res['contact']?></li>
+                                            <li><b>Price: </b>₹ <?=$res['price']?></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="card-footer text-center p-0">
+                                <button class="btn btn-primary mx-2 btn-sm">Select</>
+                                <button class="btn btn-success mx-2 btn-sm">Book Now</button>
+                            </div>
+                        </div>
+                        <?php
+                    }
+                }else{?>
+                    <h4 class="text-center text-danger mt-3">Sorry, No providers for selected option.</h4>
+                  <?php  
+                }
+            ?>
+            
+        </div>
+    </div>
+</div>
+<?php include 'resources/templates/footer-tmpl.php';?>
+<?php include 'includes/script.inc.php';?>
+</body>
+</html>

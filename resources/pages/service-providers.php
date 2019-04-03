@@ -31,10 +31,11 @@ require $path['root'] . '/includes/connect.inc.php';
             $db->query('SELECT `prov_name`, `age`, `profession`, `workexp`, `speciality` FROM `ww_provider` WHERE `profession` = :profession');
             $db->bind(':profession', $profession);
             $exeRes = $db->resultset();
-                $db->terminate();
+            $db->terminate();
 
         
     }
+
 
 
 ?>
@@ -169,10 +170,9 @@ require $path['root'] . '/includes/connect.inc.php';
 
 </style>
 </head>
-<body>
-<?php include 'resources/templates/header-tmpl.php';?>
-<?php include 'resources/templates/navigation-tmpl.php';?>
-<section class="order">
+<body class="pt-5">
+<?php include 'resources/templates/services-header-tmpl.php';?>
+<section class="order pt-5">
     <h3 class="order-title">List of Providers
         <span class="order-title-count"><?php if(isset($exeRes)) echo count($exeRes);?></span>
     </h3>

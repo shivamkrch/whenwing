@@ -14,8 +14,8 @@ class DB{
 
     public function __construct() {
         $this->host = 'localhost';
-        $this->user = 'whenwing_admin';
-        $this->password = 'o&O%B$&M^mys';
+        $this->user = 'root';
+        $this->password = '';
 		$this->dbName = 'whenwing';
 		
         //pdo for mysql
@@ -82,7 +82,7 @@ class DB{
 
     public function queryError(){
         $this->qError = $this->conn->errorInfo();
-        if (!is_null($qError[2])) {
+        if (!is_null($this->qError[2])) {
             echo $qError[2];
         }
     }

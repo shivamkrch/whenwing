@@ -26,7 +26,16 @@ if (isset($_GET['v1']) && isset($_GET['v2']) && isset($_GET['v3']) && isset($_GE
         case 'services':
             switch($post_get_v2){
                 case 'ac-service-repair-and-installation':
-                    require $path['pages'] . '/ac-service-repair-and-installation.php';
+                case 'referigerator-repair':
+                case 'washing-machine-repair':
+                case 'water-purifier-repair':
+                case 'microwave-repair':
+                case 'tv-repair-and-installation':
+                case 'air-cooler-repair':
+                case 'geyser-repair':
+                case 'computer-repair':
+                case 'mobile-repair':
+                    require $path['pages'] . '/appliance-repair.php';
                     break;
                 default:require $path['pages'] . '/404.php';
             }
