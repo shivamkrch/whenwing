@@ -10,7 +10,7 @@ $appliance_types = explode(',',$service_res['appliance_types']);
             </a>
         </div>
         <div class="search-div form-inline mt-0 mb-0 p-0" style="background: inherit; display: inline-block">
-            <form class="mt-xs-3 mt-sm-0" action="/?v1=services&v2=<?=$_GET['v2']?>" method="POST">
+            <form class="mt-3 mt-sm-0" action="/?v1=services&v2=<?=$_GET['v2']?>" method="POST">
             <select class="serv-inp-text firstoption form-control mr-3 mb-2 mb-sm-0" name="firstoption" id="firstoption">
                 <option disabled selected >Select service</option>
                 <?php

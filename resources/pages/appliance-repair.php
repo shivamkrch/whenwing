@@ -97,7 +97,7 @@ require $path['root'] . '/includes/connect.inc.php';
                             ?>
                             <div class="card-body">
                                 <div class="row">
-                                    <div class="col-6">
+                                    <div class="col-sm-6">
                                         <ul>
                                             <li><b>Age: </b><?=$res['age']?></li>
                                             <li><b>Work Experience: </b><?=$res['workexp']?></li>
@@ -105,7 +105,7 @@ require $path['root'] . '/includes/connect.inc.php';
                                             <li><b>About: </b><?=$res['about']?></li>
                                         </ul>
                                     </div>
-                                    <div class="col-6">
+                                    <div class="col-sm-6">
                                         <ul>
                                             <li><b>Address: </b><?=$res['addr']?></li>
                                             <li><b>Speciality: </b><?=$res['speciality']?></li>
