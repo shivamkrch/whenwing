@@ -2,26 +2,20 @@
 require $path['root'] . '/includes/connect.inc.php';
     $profession = $_GET['v2'];
     $profession = str_replace("-"," ",$profession);
-    if(isset($_POST['firstoption']) && isset($_POST['secondoption'])){
+    if(isset($_POST['priceFilter']) && isset($_POST['locFilter'])){
         $db = new DB();
-        $db->query('SELECT `prov_name`, `age`, `profession`, `workexp`, `speciality`,`prov_record`, `addr`, `contact`, `about`, `price` FROM `ww_provider` WHERE `profession`=:profession');
-        $db->queryError();
-        $db->bind(':profession', $profession);
-        $exeRes = $db->resultset();
-        echo $db->rowCount();
-    }elseif(isset($_POST['priceFilter']) && isset($_POST['locFilter'])){
-        $db = new DB();
-        $db->query('SELECT `prov_name`, `age`, `profession`, `workexp`, `speciality`,`prov_record`, `addr`, `contact`, `about`, `price` FROM `ww_provider` WHERE `profession`=:profession AND `price`<=:price');
+        $db->query('SELECT * FROM `ww_provider` WHERE `profession`=:profession AND `price`<=:price');
         $db->queryError();
         $db->bind(':profession', $profession);
         $db->bind(':price', $_POST['priceFilter']);
         $exeRes = $db->resultset();
     }else{
         $db = new DB();
-        $db->query('SELECT `prov_name`, `age`, `profession`, `workexp`, `speciality`,`prov_record`, `addr`, `contact`, `about`, `price` FROM `ww_provider` WHERE `profession`=:profession');
+        $db->query('SELECT * FROM `ww_provider` WHERE `profession`=:profession');
         $db->queryError();
         $db->bind(':profession', $profession);
         $exeRes = $db->resultset();
+        $res_count = count($exeRes);
     }
     $db->query('SELECT * FROM services WHERE service=:service');
     $db->bind(':service',$profession);
@@ -76,15 +70,28 @@ require $path['root'] . '/includes/connect.inc.php';
     </div>
     <div class="col-sm-9">
         <div class="container m-3 p-4 shadow-sm">
-            <h3>List of Providers <span class="badge badge-pill badge-<?php
-            if(count($exeRes)>0) echo 'success';
+            <h3>List of Providers <span id="res-count" class="badge badge-pill badge-<?php
+            if($res_count > 0) echo 'success';
             else echo 'danger';
-            ?>"><?=count($exeRes) ?></span></h3>
+            ?>"><?=$res_count ?></span></h3>
             <?php
-                if($db->rowCount()>0){
+                if($db->rowCount() > 0){
                     foreach($exeRes as $res){
-                        echo '
-                        <div class="card mt-3 shadow-sm">
+                        if(isset($_POST['firstoption'])){
+                            $prov_service_types = explode(',',$res['service_types']);
+                            if(array_search(strtolower($_POST['firstoption']), array_map('strtolower',$prov_service_types)) === FALSE) {
+                                $res_count--;
+                                continue;
+                            }
+                        }
+                        if(isset($_POST['secondoption'])){
+                            $prov_appl_types = explode(',',$res['appliance_types']);
+                            if(array_search(strtolower($_POST['secondoption']), array_map('strtolower',$prov_appl_types)) === FALSE) {
+                                $res_count--;
+                                continue;
+                            }
+                        }
+                        echo '<div class="card mt-3 shadow-sm">
                             <div class="card-header"><img src="https://via.placeholder.com/150" alt="John Doe" class="mr-3 rounded-circle" style="width:50px;">
                             <h4 style="display: inline-block">'.$res['prov_name'].'</h4></div>';
                             ?>
@@ -116,8 +123,30 @@ require $path['root'] . '/includes/connect.inc.php';
                         <?php
                     }
                 }else{?>
-                    <h4 class="text-center text-danger mt-3">Sorry, No providers for selected option.</h4>
+                    <h4 class="text-center text-danger mt-3">Sorry, No providers for selected options.</h4>
                   <?php  
+                }
+                if($res_count <= 0){
+                    ?>
+                    <h4 class="text-center text-danger mt-3">Sorry, No providers for selected options.</h4>
+                    <script>
+                        var res_count=document.getElementById('res-count');
+                        res_count.innerHTML= '<?=$res_count ?>';
+                        res_count.classList.remove('badge-success');
+                        res_count.classList.add('badge-danger');
+
+                    </script>
+                  <?php  
+                }else{
+                ?>
+                    <script>
+                        var res_count=document.getElementById('res-count');
+                        res_count.innerHTML= '<?=$res_count ?>';
+                        res_count.classList.remove('badge-danger');
+                        res_count.classList.add('badge-success');
+
+                    </script>
+                    <?php
                 }
             ?>
             

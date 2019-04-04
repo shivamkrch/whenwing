@@ -16,7 +16,7 @@ $appliance_types = explode(',',$service_res['appliance_types']);
                 <?php
                     foreach($service_types as $service_type){
                 ?>
-                <option><?=$service_type?></option>
+                <option value="<?=$service_type?>"><?=$service_type?></option>
                 <?php
                     }
                 ?>
