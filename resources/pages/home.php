@@ -18,5 +18,6 @@
 <?php include 'resources/templates/services-tmpl.php';?>
 <?php include 'resources/templates/footer-tmpl.php';?>
 <?php include 'includes/script.inc.php';?>
+<?php include 'includes/location-modal.inc.php';?>
 </body>
 </html>

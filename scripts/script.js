@@ -706,4 +706,5 @@ window.onload = function() {
   $("#locFilter").on("input", function() {
     $("#locFilterVal").text($(this).val() + " KM");
   });
+  $("#locModal").modal('show');
 };
