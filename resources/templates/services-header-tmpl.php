@@ -11,22 +11,22 @@ $appliance_types = explode(',',$service_res['appliance_types']);
         </div>
         <div class="search-div form-inline mt-0 mb-0 p-0" style="background: inherit; display: inline-block">
             <form class="mt-3 mt-sm-0" action="/?v1=services&v2=<?=$_GET['v2']?>" method="POST">
-            <select class="serv-inp-text firstoption form-control mr-3 mb-2 mb-sm-0" name="firstoption" id="firstoption">
+            <select class="serv-inp-text firstoption custom-select mr-3 mb-2 mb-sm-0" name="firstoption" id="firstoption">
                 <option disabled selected >Select service</option>
                 <?php
                     foreach($service_types as $service_type){
                 ?>
-                <option value="<?=$service_type?>"><?=$service_type?></option>
+                <option value="<?=$service_type?>"><?=ucwords($service_type)?></option>
                 <?php
                     }
                 ?>
             </select>
-            <select class="serv-inp-text secondoption form-control mr-sm-3 mb-2 mb-sm-0" name="secondoption" id="secondoption" disabled >
+            <select class="serv-inp-text secondoption custom-select mr-sm-3 mb-2 mb-sm-0" name="secondoption" id="secondoption" disabled >
                 <option disabled selected >Select type</option>
                 <?php
                     foreach($appliance_types as $appliance_type){
                 ?>
-                <option><?=$appliance_type?></option>
+                <option value="<?=$appliance_type?>"><?=ucwords($appliance_type)?></option>
                 <?php
                     }
                 ?>
@@ -37,14 +37,20 @@ $appliance_types = explode(',',$service_res['appliance_types']);
         <style>
             @media (min-width: 990px){
                 .header-menu a {
-                    display: block;
+                    display: block;           
                     margin: 10px;
                     float: none;
                 }
             }
             @media (max-width: 576px){
-                .form-control{
+                .form-inline .custom-select{
                     width: 45% !important;
+                    display: inline;
+                }
+            }
+            @media (min-width: 576px){
+                .form-inline .custom-select{
+                    width: 35% !important;
                     display: inline;
                 }
             }

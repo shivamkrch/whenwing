@@ -8,7 +8,7 @@
             </div>
             <!-- Modal body -->
             <div class="modal-body text-center">
-                <form autocomplete="off" action="/action_page.php">
+                <form autocomplete="off" action="/action_page.php" class="mt-3">
                     <div class="autocomplete" style="width:90%;">
                         <input id="userLoc" type="text" name="userLoc" placeholder="Enter your area, city, state or pincode" class="form-control m-3">
                     </div>
@@ -55,7 +55,7 @@ function autocomplete() {
           b = document.createElement("DIV");
           /*make the matching letters bold:*/
           b.innerHTML = areas[i].substr(0, loc);
-          b.innerHTML += "<strong>" + areas[i].substr(loc, val.length) + "</strong>";
+          b.innerHTML += "<strong style='color: blue'>" + areas[i].substr(loc, val.length) + "</strong>";
           b.innerHTML += areas[i].substr(loc + val.length);
           /*insert a input field that will hold the current array item's value:*/
           b.innerHTML += "<input type='hidden' value='" + areas[i] + "'>";

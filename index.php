@@ -25,6 +25,7 @@ if (isset($_GET['v1']) && isset($_GET['v2']) && isset($_GET['v3']) && isset($_GE
             break;
         case 'services':
             switch($post_get_v2){
+                // Appliance Service routes
                 case 'ac-service-repair-and-installation':
                 case 'referigerator-repair':
                 case 'washing-machine-repair':
@@ -36,6 +37,17 @@ if (isset($_GET['v1']) && isset($_GET['v2']) && isset($_GET['v3']) && isset($_GE
                 case 'computer-repair':
                 case 'mobile-repair':
                     require $path['pages'] . '/appliance-repair.php';
+                    break;
+                // Personal Service routes
+                case 'personal-cook':
+                case 'personal-driver':
+                case 'personal-yoga-trainer':
+                case 'personal-dietician':
+                case 'personal-choreographer':
+                case 'personal-security-guard':
+                case 'personal-home-maid':
+                case 'personal-gardener':
+                    require $path['pages'] . '/personal-service.php';
                     break;
                 default:require $path['pages'] . '/404.php';
             }

@@ -827,6 +827,8 @@ header {
   top: 100%;
   left: 0;
   right: 0;
+  max-height: 60vh;
+  overflow: auto;
 }
 .autocomplete-items div {
   padding: 10px;

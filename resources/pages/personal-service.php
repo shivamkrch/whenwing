@@ -2,13 +2,14 @@
 require $path['root'] . '/includes/connect.inc.php';
     $profession = $_GET['v2'];
     $profession = str_replace("-"," ",$profession);
-    if(isset($_POST['priceFilter']) && isset($_POST['locFilter'])){
+    if(isset($_POST['priceFilter']) && isset($_POST['locFilter']) && isset($_POST['prefFilter'])){
         $db = new DB();
         $db->query('SELECT * FROM `ww_provider` WHERE `profession`=:profession AND `price`<=:price');
         $db->queryError();
         $db->bind(':profession', $profession);
         $db->bind(':price', $_POST['priceFilter']);
         $exeRes = $db->resultset();
+        $res_count = count($exeRes);
     }else{
         $db = new DB();
         $db->query('SELECT * FROM `ww_provider` WHERE `profession`=:profession');
@@ -26,7 +27,7 @@ require $path['root'] . '/includes/connect.inc.php';
 <html>
 <head>
 <meta charset="utf-8">
-<title>WhenWing Services | <?=ucwords($service_res['service'])?></title>
+<title>WhenWing Services | <?=ucwords($profession)?></title>
 <meta name="description" content="">
 <meta name="keywords" content="">
 <meta name="theme-color" content="#4885ed" />
@@ -43,7 +44,7 @@ require $path['root'] . '/includes/connect.inc.php';
     </button>
     <h2><i class="fas fa-sliders-h text-primary mr-2 align-middle mb-1" style="font-size: 1.5rem"></i>Filters</h2>
     <form class="collapse mt-3" id="filterForm" method="POST" action="?v1=services&v2=<?=$_REQUEST['v2']?>">
-        <label for="customRange" style="font-weight: bold">Price</label>
+        <label for="priceFilter" style="font-weight: bold">Price</label>
         <div class="d-flex bd-highlight">
             <div class="p-2 flex-fill bd-highlight">₹ 100</div>
             <div class="p-2 flex-fill bd-highlight">
@@ -55,7 +56,7 @@ require $path['root'] . '/includes/connect.inc.php';
             <div class="p-2 flex-fill bd-highlight">₹ 5000</div>
         </div>
         <div class="text-center" id="priceFilterVal" style="font-weight: bold"></div>
-        <label for="customRange" style="font-weight: bold">Location</label>
+        <label for="locFIlter" style="font-weight: bold">Location</label>
         <div class="d-flex bd-highlight">
             <div class="p-2 flex-fill bd-highlight">1 KM</div>
             <div class="p-2 flex-fill bd-highlight">
@@ -63,8 +64,21 @@ require $path['root'] . '/includes/connect.inc.php';
             </div>
             <div class="p-2 flex-fill bd-highlight">20 KM</div>
         </div>
-        <div class="text-center" id="locFilterVal" style="font-weight: bold"></div>
-        <input type="submit" value="Apply" class="btn btn-primary btn-sm btn-block mt-3">
+        <div class="text-center mb-3" id="locFilterVal" style="font-weight: bold"></div>
+        <?php
+        if(!($_GET['v2'] == 'personal-driver' || $_GET['v2'] == 'personal-gardener')){
+        ?>
+        <div class="mb-1" style="font-weight: bold">Preference</div class="mb-1">
+        <div class="custom-control custom-radio ml-2">
+            <input type="radio" class="custom-control-input" id="prefFilMen" name="prefFilter" value="male">
+            <label class="custom-control-label" for="prefFilMen">Male</label>
+        </div> 
+        <div class="custom-control custom-radio ml-2">
+            <input type="radio" class="custom-control-input" id="prefFilWomen" name="prefFilter" value="female">
+            <label class="custom-control-label" for="prefFilWomen">Female</label>
+        </div>
+        <?php } ?>
+        <input type="submit" value="Apply" class="btn btn-primary btn-sm mt-3 ml-2 col-sm-5">
         <input type="reset" value="Clear Filters" class="btn btn-danger ml-2 btn-sm mt-3 col-sm-5" id="resetFilterForm">
     </form>
 
@@ -92,8 +106,15 @@ require $path['root'] . '/includes/connect.inc.php';
                                 continue;
                             }
                         }
+                        if(isset($_POST['prefFilter'])){
+                            $prov_appl_types = explode(',',$res['prov_prefs']);
+                            if(array_search(strtolower($_POST['prefFilter']), array_map('strtolower',$prov_appl_types)) === FALSE) {
+                                $res_count--;
+                                continue;
+                            }
+                        }
                         echo '<div class="card mt-3 shadow-sm">
-                            <div class="card-header"><img src="https://via.placeholder.com/150" alt="John Doe" class="mr-3 rounded-circle" style="width:50px;">
+                            <div class="card-header"><img src="https://via.placeholder.com/150" alt="'.$res['prov_name'].'" class="mr-3 rounded-circle" style="width:50px;">
                             <h4 style="display: inline-block">'.$res['prov_name'].'</h4></div>';
                             ?>
                             <div class="card-body">
